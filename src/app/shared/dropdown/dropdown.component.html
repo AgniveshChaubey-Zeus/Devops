@@ -1,0 +1,14 @@
+<div class="dropdown">
+    <div class="dropdown_title">
+        {{title}}*
+    </div>
+    <div
+        [ngClass]='{"dropdown_select":(selected!==null || option!==""), "dropdown_unselect":(selected===null&&option==="")}'>
+        {{option===""?"Select "+title:option}}
+        <img src="assets/icons/arrow-down.svg" alt="" srcset="">
+    </div>
+    <hr class="dropdown_hr">
+    <div class="dropdown-content">
+        <a *ngFor="let option of options" (click)="selectOption(option)">{{option}}</a>
+    </div>
+</div>

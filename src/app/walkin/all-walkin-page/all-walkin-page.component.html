@@ -1,0 +1,9 @@
+<div *ngIf="isloading" class="loading">
+    <app-loading></app-loading>
+</div>
+<div *ngIf="!isloading" class="content">
+    <walkin-card *ngFor="let walkin of walkins" title="{{walkin.title}}" [id]="walkin.job_id"
+        [start_end_date]="[walkin.start_date.toString().substring(0,10),walkin.end_date.toString().substring(0,10)]"
+        venue="{{walkin.location}}"
+        [roles]="[walkin.roles.includes(1),walkin.roles.includes(2),walkin.roles.includes(3)]"></walkin-card>
+</div>

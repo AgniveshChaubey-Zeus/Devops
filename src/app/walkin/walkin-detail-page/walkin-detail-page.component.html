@@ -1,0 +1,209 @@
+<div *ngIf="isloading" class="loading">
+    <app-loading></app-loading>
+</div>
+<div *ngIf="!isloading">
+    <div class="main_details_container">
+        <div class="title">
+            <div class="heading">
+                {{walkinDetails?.title}}
+            </div>
+            <header-btn (click)="applyForJob()" title="Apply"></header-btn>
+        </div>
+        <div class="date_time_venue_container">
+            <div class="sub_title">
+                Date & time:
+            </div>
+            <div class="date_venue">
+                <div class="date">
+                    {{walkinDetails?.start_date?.toString()?.substring(0,10)}} to
+                    {{walkinDetails?.end_date?.toString()?.substring(0,10)}}
+                </div>
+                <div class="v_divider"></div>
+                <div class="venue">
+                    <img src="assets/icons/location_gray.svg" alt="">
+                    {{walkinDetails?.location}}
+                </div>
+            </div>
+        </div>
+        <div class="h_divider"></div>
+        <div class="job_roles">
+            <div class="sub_title">
+                job roles:
+            </div>
+            <div class="roles">
+                <div *ngIf="walkinDetails?.roles?.includes(1)" class="role">
+                    <div class="role_icon">
+                        <img src="assets/icons/ID.svg" alt="">
+                    </div>
+                    Instructional Designer
+                </div>
+                <div class="v_divider"></div>
+                <div *ngIf="walkinDetails?.roles?.includes(2)" class="role">
+                    <div class="role_icon">
+                        <img src="assets/icons/ID.svg" alt="">
+                    </div>
+                    software engineer
+                </div>
+                <div class="v_divider"></div>
+                <div *ngIf="walkinDetails?.roles?.includes(3)" class="role">
+                    <div class="role_icon">
+                        <img src="assets/icons/SQE.svg" alt="">
+                    </div>
+                    software quality engineer
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="drop_collapse_container">
+        <div class="title">
+            pre-requistics & application process
+        </div>
+        <div (click)="collapse_app_process_con()" class="collapse_btn_container">
+            <img src="assets/icons/expand.svg" alt="">
+        </div>
+
+    </div>
+
+    <div id="application_process_container" class="main_container">
+        <div class="content">
+            <div class="general_instructions">
+                <div class="sub_title">
+                    General instructions :
+                </div>
+                <div class="instructions">
+                    <ul>
+                        <li *ngFor="let ins of getStringToArray(walkinDetails?.general_ins)">{{ins}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="h_divider"></div>
+            <div class="exam_instructions">
+                <div class="sub_title">
+                    Instructions for the Exam :
+                </div>
+                <div class="instructions">
+                    <ul>
+
+                        <li *ngFor="let ins of getStringToArray(walkinDetails?.instructions)">
+                            {{ins}}
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="h_divider"></div>
+            <div class="system_requirements">
+                <div class="sub_title">
+                    Minimum System Requirements : </div>
+                <div class="instructions">
+                    <ul>
+                        <li *ngFor="let sysreq of getStringToArray(walkinDetails?.sys_req)">{{sysreq}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="h_divider"></div>
+            <div class="system_requirements">
+                <div class="sub_title">
+                    Process :
+                </div>
+                <div class="instructions">
+                    <ul>
+                        <li *ngFor="let process of getStringToArray(walkinDetails?.process)">
+                            {{process}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main_container time_slots_pref_container">
+        <div class="content">
+            <div class="title">
+                Time slots & preferences
+            </div>
+            <div class="time_slot_pref">
+                <div class="sub_title">
+                    select a time slot:
+                </div>
+                <div class="time_slots">
+                    <div *ngFor="let timeslot of walkinDetails?.timeslots" class="radio_btn">
+                        <radio-btn (value)="handleSelectTimeSlot($event)"
+                            label="{{timeslot[0] + ' to ' + timeslot[1] }}" id="1" name="time_slot"></radio-btn>
+                    </div>
+                </div>
+            </div>
+            <div class="h_divider"></div>
+            <div class="role_pref">
+                <div class="sub_title">
+                    select your preference:
+                </div>
+                <div class="roles">
+                    <checkbox-input [(checked)]="pref_jobs[i]" *ngFor="let role of walkinDetails?.roles; let i = index"
+                        label="{{getRole(role)}}"></checkbox-input>
+                </div>
+            </div>
+            <div class="h_divider"></div>
+            <div class="upload_resume_container">
+                <label class="upload_resume_container">
+                    <input accept=".pdf" (change)="updateResume($event)" type="file">
+                    <img src="assets/icons/upload.svg" alt="">
+                    <span>upload updated resume</span>
+                    <div>{{resumeFileName}}</div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let role of walkinDetails?.roles">
+        <div class="drop_collapse_container margin_con">
+            <div class="title">
+                {{getRole(role)}}
+            </div>
+            <div (click)="collapse_con(getRole(role))" class="collapse_btn_container">
+                <img src="assets/icons/expand.svg" alt="">
+            </div>
+
+        </div>
+
+        <div id="{{getRole(role)}}" class="main_container">
+            <div class="content">
+                <div class="sub_title">
+                    Gross Compensation Package :
+                </div>
+                <div class="sub_content">
+                    Rs. {{walkinDetails?.lpas?.at(role-1)}} lpa
+                </div>
+                <div class="h_divider"></div>
+                <div class="role_desc">
+                    <div class="sub_title">
+                        Role Description :
+                    </div>
+                    <div class="instructions">
+                        <ul>
+                            <li *ngFor="let desc of getDesc(walkinDetails?.role_descs?.at(role-1))">
+                                {{desc}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="h_divider"></div>
+                <div class="requirement_desc">
+                    <div class="sub_title">
+                        Requirements :
+                    </div>
+                    <div class="instructions">
+                        <ul>
+                            <li *ngFor="let ins of getRequirements(walkinDetails?.requirements?.at(role-1))">
+                                {{ins}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gap"></div>
+
+    <button class="bottom_btn">apply</button>
+</div>
